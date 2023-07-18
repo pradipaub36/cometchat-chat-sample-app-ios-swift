@@ -111,8 +111,8 @@ public enum Controller : String {
      - See Also:
      [CometChatUI Documentation](https://prodocs.cometchat.com/docs/ios-ui-unified)
      */
-    @objc public func setup(withStyle: UIModalPresentationStyle){
-        self.modalPresentationStyle = withStyle
+    @objc public func setup(withStyle: UIModalPresentationStyle = .fullScreen){
+//        self.modalPresentationStyle = withStyle
         var controllers = [UIViewController]()
 
         for tab in UIKitSettings.tabs {

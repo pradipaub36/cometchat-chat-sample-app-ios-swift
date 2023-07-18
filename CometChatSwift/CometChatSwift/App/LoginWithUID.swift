@@ -91,6 +91,7 @@ class LoginWithUID: UIViewController, UITextFieldDelegate {
                     UserDefaults.standard.set(userID, forKey: "LoggedInUserUID")
                     DispatchQueue.main.async {
                         self.activityIndicator.stopAnimating()
+                        /*
                          let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainViewController") as! MainViewController
                         let navigationController: UINavigationController = UINavigationController(rootViewController: mainVC)
                         navigationController.modalPresentationStyle = .fullScreen
@@ -109,6 +110,14 @@ class LoginWithUID: UIViewController, UITextFieldDelegate {
                                 self.navigationController?.navigationBar.isTranslucent = false
                             }
                         self.present(navigationController, animated: true, completion: nil)
+                        */
+                        
+                        guard let delegate = UIApplication.shared.delegate as? AppDelegate  else {
+                            return
+                        }
+                        let cometChatUI = CometChatUI()
+                        cometChatUI.setup()
+                        delegate.window?.rootViewController = cometChatUI
                     }
             }) { (error) in
                 DispatchQueue.main.async {

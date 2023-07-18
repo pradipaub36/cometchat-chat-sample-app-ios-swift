@@ -22,24 +22,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CometChatCallManager().registerForCalls(application: self)
         
         if CometChat.getLoggedInUser() != nil {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainVC = storyboard.instantiateViewController(withIdentifier: "mainViewController") as! MainViewController
-            let navigationController: UINavigationController = UINavigationController(rootViewController: mainVC)
-            navigationController.modalPresentationStyle = .fullScreen
-            navigationController.title = "CometChat KitchenSink"
-            navigationController.navigationBar.prefersLargeTitles = true
-            if #available(iOS 13.0, *) {
-                let navBarAppearance = UINavigationBarAppearance()
-                navBarAppearance.configureWithOpaqueBackground()
-                navBarAppearance.titleTextAttributes = [ .foregroundColor:  UIColor.label,.font: UIFont.boldSystemFont(ofSize: 20) as Any]
-                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label, .font: UIFont.boldSystemFont(ofSize: 30) as Any]
-                navBarAppearance.shadowColor = .clear
-                navBarAppearance.backgroundColor = .systemBackground
-                navigationController.navigationBar.standardAppearance = navBarAppearance
-                navigationController.navigationBar.scrollEdgeAppearance = navBarAppearance
-                navigationController.navigationBar.isTranslucent = false
-            }
-            self.window?.rootViewController = navigationController
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let mainVC = storyboard.instantiateViewController(withIdentifier: "mainViewController") as! MainViewController
+            let cometChatUI = CometChatUI()
+
+//            let navigationController: UINavigationController = UINavigationController(rootViewController: cometChatUI)
+//            navigationController.modalPresentationStyle = .fullScreen
+//            navigationController.title = "CometChat KitchenSink"
+//            navigationController.navigationBar.prefersLargeTitles = true
+//            if #available(iOS 13.0, *) {
+//                let navBarAppearance = UINavigationBarAppearance()
+//                navBarAppearance.configureWithOpaqueBackground()
+//                navBarAppearance.titleTextAttributes = [ .foregroundColor:  UIColor.label,.font: UIFont.boldSystemFont(ofSize: 20) as Any]
+//                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label, .font: UIFont.boldSystemFont(ofSize: 30) as Any]
+//                navBarAppearance.shadowColor = .clear
+//                navBarAppearance.backgroundColor = .systemBackground
+//                navigationController.navigationBar.standardAppearance = navBarAppearance
+//                navigationController.navigationBar.scrollEdgeAppearance = navBarAppearance
+//                navigationController.navigationBar.isTranslucent = false
+//            }
+//
+            cometChatUI.setup()
+            self.window?.rootViewController = cometChatUI
             self.window?.makeKeyAndVisible()
         }
         return true

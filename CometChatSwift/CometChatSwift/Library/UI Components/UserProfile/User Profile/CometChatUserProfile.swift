@@ -151,6 +151,9 @@ public class CometChatUserProfile: UIViewController {
         
         let CometChatSettingsItem  = UINib.init(nibName: "CometChatSettingsItem", bundle: UIKitSettings.bundle)
         self.tableView.register(CometChatSettingsItem, forCellReuseIdentifier: "CometChatSettingsItem")
+        
+        let logoutCell  = UINib.init(nibName: "LogoutCell", bundle: nil)
+        self.tableView.register(logoutCell, forCellReuseIdentifier: "logoutCell")
     }
     
     /**
@@ -184,7 +187,7 @@ extension CometChatUserProfile: UITableViewDelegate , UITableViewDataSource {
     /// This method specifies the number of sections to display list of items.
     /// - Parameter tableView: An object representing the table view requesting this information.
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     /// This method specifies height for section in CometChatUserProfile
@@ -213,6 +216,8 @@ extension CometChatUserProfile: UITableViewDelegate , UITableViewDataSource {
             sectionTitle.text =  "PREFERENCES".localized()
         }else if section == 2{
             sectionTitle.text =  ""
+        }else if section == 3{
+            sectionTitle.text =  ""
         }
         sectionTitle.font = UIFont.systemFont(ofSize: 13, weight: .medium)
         if #available(iOS 13.0, *) {
@@ -235,6 +240,8 @@ extension CometChatUserProfile: UITableViewDelegate , UITableViewDataSource {
             return preferances.count
         }else if section == 2 {
             return others.count
+        }else if section == 3 {
+            return 1
         }else{
             return 0
         }
@@ -251,6 +258,8 @@ extension CometChatUserProfile: UITableViewDelegate , UITableViewDataSource {
             return 60
         }else if indexPath.section == 2 {
             return 60
+        }else if indexPath.section == 3 {
+            return 80
         }else{
             return 0
         }
@@ -300,6 +309,12 @@ extension CometChatUserProfile: UITableViewDelegate , UITableViewDataSource {
             default:
                 break
             }
+        }else if indexPath.section == 3{
+            
+            let LogoutCell = tableView.dequeueReusableCell(withIdentifier: "logoutCell") as! LogoutCell
+            LogoutCell.delegate = self
+            return LogoutCell
+
         }
         return UITableViewCell()
     }
@@ -360,3 +375,37 @@ extension CometChatUserProfile: CometChatUserListItemDelegate {
 
 
 /*  ----------------------------------------------------------------------------------------- */
+
+extension CometChatUserProfile: LogoutCellDelegate {
+   
+    func didlogoutButtonPressed(_ sender: UIButton) {
+        
+        // Declare Alert
+        let dialogMessage = UIAlertController(title: "⚠️ Warning!", message: "Are you sure you want to Logout?", preferredStyle: .alert)
+
+        // Create OK button with action handler
+        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+                 CometChat.logout(onSuccess: { (success) in
+                     DispatchQueue.main.async {
+                         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginWithUID") as! LoginWithUID
+                         UIApplication.shared.keyWindow?.rootViewController = viewController
+                        CometChatSnackBoard.display(message:  "Logged out successfully.", mode: .error, duration: .short)
+                         }
+                 }) { (error) in
+                     DispatchQueue.main.async {
+                        CometChatSnackBoard.display(message:  error.errorDescription, mode: .error, duration: .short)
+                     }
+                 }
+        })
+        // Create Cancel button with action handlder
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
+        }
+        //Add OK and Cancel button to dialog message
+        dialogMessage.addAction(ok)
+        dialogMessage.addAction(cancel)
+
+        // Present dialog message to user
+        self.present(dialogMessage, animated: true, completion: nil)
+    }
+}
