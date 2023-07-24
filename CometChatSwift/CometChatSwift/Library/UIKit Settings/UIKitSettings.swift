@@ -158,5 +158,5 @@ public struct UIKitSettings {
     static var messageInformation: SwitchMode =  .enabled
     static var viewProfile: SwitchMode =  .enabled
     static var startConversation: SwitchMode =  .enabled
-    public static var tabs: [Controller] = [.chats, .calls, .users , .groups, .settings]
+    public static var tabs: [Controller] = [.chats, .calls, /*.users , .groups,*/ .settings]
 }
